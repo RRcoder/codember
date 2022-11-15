@@ -1,44 +1,58 @@
 import re
-ult=''
-xxx=[]
-def partir(c):
-    return re.split('\n| ', c)
 
-def data_to_dicc(l, keys):
-    dicc={}
-    for i in l:
-        kv=re.split(':', i)
-        if kv[0] in keys:
-            dicc[kv[0]]=kv[1]
-    return dicc
-
-f = open("users.txt", "r")
+f = open("encrypted.txt", "r")
 a=f.read() # leo todo el archivo porque es cortito
 
-b= re.split('\n\n', a)
+b= re.split(' ', a)
 
 print(len(b))
+print( b)
 print("===========")
 
-c=list(map( partir, b))
+palabras=['']
 
-oblig_keys=['usr','eme','psw','age','loc','fll']
-ccc=0
-last_usr=''
-for r in c:
-    d= data_to_dicc(r, oblig_keys)
-    todos = [1 for x in d.keys() if x in oblig_keys]
-    print(d)
-    if sum(todos)==6:
-        print("YES")
-        print(d['usr'])
-        ccc+=1
-        last_usr=d['usr']
-    else:
-        print('NO')
+for l in b:
+    pos=0
+    letra_ascii=''
+    bflag=False
+    for i in range(len(l)):
+        car = l[i]
+        if pos==0:
+            letra_ascii+=car
+            if car=='9':
+                bflag=True
+            pos+=1
+        elif pos==1:
+            letra_ascii+=car
+    
+            if bflag:
+                palabras[len(palabras)-1]+=chr(int(letra_ascii))
+                bflag=False
+                pos=0
+                letra_ascii=''
+            else:
+                pos+=1
+        elif pos==2:
+            letra_ascii+=car
+            palabras[len(palabras)-1]+=chr(int(letra_ascii))
+            bflag=False
+            pos=0
+            letra_ascii=''
+    
+
+
+    palabras.append('')
+
+print(palabras)
+
+    
+
+
 
 print("===========")
-print("cantidad de correctos: {}".format(ccc))
-print("ultimo user {}".format(last_usr))
+#print("cantidad de correctos: {}".format(ccc))
+#print("ultimo user {}".format(last_usr))
+
+
 
 f.close()
