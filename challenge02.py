@@ -19,7 +19,7 @@ for l in b:
         car = l[i]
         if pos==0:
             letra_ascii+=car
-            if car=='9':
+            if car!='1':
                 bflag=True
             pos+=1
         elif pos==1:
